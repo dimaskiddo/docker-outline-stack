@@ -26,7 +26,7 @@ services:
   outline:
     image: outlinewiki/outline:latest
     command: >
-      yarn start
+      yarn start --env=production-ssl-disabled
     networks:
       - outlinenet
     ports:
