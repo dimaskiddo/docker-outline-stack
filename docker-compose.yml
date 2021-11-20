@@ -1,0 +1,38 @@
+version: '2'
+
+networks:
+  outlinenet:
+    driver: bridge
+
+services:
+  redis:
+    image: dimaskiddo/alpine:keydb-6.2
+    networks:
+      - outlinenet
+    env_file: ./env/redis.env 
+    volumes:
+      - ./data/redis:/var/lib/keydb/data
+    restart: unless-stopped
+
+  postgresql:
+    image: dimaskiddo/debian:postgresql-12
+    networks:
+      - outlinenet
+    env_file: ./env/postgresql.env
+    volumes:
+      - ./data/postgresql:/var/lib/pgsql/data
+    restart: unless-stopped
+
+  outline:
+    image: outlinewiki/outline:latest
+    command: >
+      yarn start
+    networks:
+      - outlinenet
+    ports:
+      - 80:3000    
+    env_file: ./env/outline.env
+    restart: unless-stopped
+    depends_on:
+      - redis
+      - postgresql
