@@ -30,7 +30,7 @@ services:
     networks:
       - outlinenet
     ports:
-      - 80:3000    
+      - 80:3000
     env_file: ./env/outline.env
     restart: unless-stopped
     depends_on:
